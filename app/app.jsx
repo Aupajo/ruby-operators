@@ -1,34 +1,29 @@
-import jQuery from "jquery";
 import React from "react";
-import Router from "react-router";
-import { DefaultRoute, Route, RouteHandler, Redirect } from "react-router";
-
-window.jQuery = jQuery;
-
-require("./assets/lib/css/bootstrap.min.css");
-require("./assets/lib/css/bootstrap-theme.min.css");
-require("./assets/lib/js/bootstrap.min.js");
-
-require("./assets/css/style.css");
-require("./assets/css/github.css");
+import {render} from 'react-dom';
+import { createHistory, useBasename } from 'history'
+import { Router, Route, Link, NoMatch, Redirect, IndexRoute, IndexRedirect } from 'react-router'
 
 import Home from "./home";
+
+const history = useBasename(createHistory)({
+    basename: '/'
+});
 
 var App = React.createClass({
     render: function() {
         return (
-            <RouteHandler/>
+            <div>
+              {this.props.children}
+            </div>
         );
     }
 });
 
-var routes = (
-    <Route handler={App} path="/">
-        <Redirect from="/" to="/spaceship" params={{operator: "spaceship"}} />
-        <Route path="/:operator" handler={Home} />
+render((
+  <Router  history={history}>
+    <Route path="/" component={App}>
+      <IndexRedirect from="/" to="/spaceship"/>
+      <Route path="home" component={Home} />
     </Route>
-);
-
-Router.run(routes, Router.HashLocation, function (Handler) {
-    React.render(<Handler/>, document.getElementById("container"));
-});
+  </Router>
+), document.getElementById('container'))

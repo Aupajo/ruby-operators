@@ -1,6 +1,9 @@
+var path = require('path');
+var APP_DIR = path.resolve(__dirname, './app');
+
 module.exports = {
     entry: {
-        javascript: "./app/app.jsx"
+        javascript: APP_DIR + "/app.jsx"
     },
 
     output: {
@@ -13,7 +16,6 @@ module.exports = {
     },
 
     module: {
-        noParse: [/autoit.js/],
         loaders: [
             {
                 test: /\.css$/,
@@ -21,7 +23,8 @@ module.exports = {
             },
             {
                 test: /\.jsx$/,
-                loaders: ["react-hot", "babel-loader"]
+                include : APP_DIR,
+                loaders: ["babel-loader"]
             },
             {
                 test: /\.(png|woff|woff2|eot|ttf|svg)$/,
